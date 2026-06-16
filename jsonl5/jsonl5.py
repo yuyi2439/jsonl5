@@ -10,16 +10,33 @@ def load(fp: IO, **kwargs):
 
     Supports the same arguments as :func:`json5.load`
     """
-    return [json5.load(fp, **kwargs) for line in fp if line.strip()]
+    s = fp.read()
+    return loads(s, **kwargs)
 
 
-def loads(s: str, **kwargs):
+def loads(s: str, **kwargs) -> list:
     """
     Deserialize ``s`` (a string containing a JSONL5 document) to a Python object.
 
     Supports the same arguments as :func:`json5.loads`
     """
-    return [json5.loads(s, **kwargs) for s in s.splitlines() if s.strip()]
+    output = []
+    for i, line in enumerate(s.splitlines()):
+        line = line.strip()
+        if not line:
+            continue
+        
+        try:
+            output.append(json5.loads(line, **kwargs))
+        except ValueError as e:
+            raise ValueError(
+                f"Error parsing line {i + 1}: {line}"
+            ) from e
+    
+    return output
+
+    # return [json5.loads(s, **kwargs) for s in s.splitlines() if s.strip()]
+
 
 
 def dump(obj: Iterable, fp: IO, **kwargs):
