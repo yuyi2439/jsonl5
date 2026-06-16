@@ -34,3 +34,9 @@ Issues = "https://github.com/yuyi2439/jsonl5/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["jsonl5"]
+
+[dependency-groups]
+dev = [
+    "pytest>=7",
+    "ruff>=0.11",
+]
