@@ -2,6 +2,6 @@
 
 from .jsonl5 import dump, dumps, load, loads
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 __all__ = ["dump", "dumps", "load", "loads"]

@@ -25,34 +25,33 @@ def loads(s: str, **kwargs) -> list:
         line = line.strip()
         if not line:
             continue
-        
+
         try:
             output.append(json5.loads(line, **kwargs))
         except ValueError as e:
-            raise ValueError(
-                f"Error parsing line {i + 1}: {line}"
-            ) from e
-    
+            raise ValueError(f"Error parsing line {i + 1}: {line}") from e
+
     return output
 
     # return [json5.loads(s, **kwargs) for s in s.splitlines() if s.strip()]
 
 
-
-def dump(obj: Iterable, fp: IO, **kwargs):
+def dump(obj: Iterable, fp: IO, *, ensure_ascii=True, **kwargs):
     """
     Serialize ``obj`` to a JSONL5-formatted stream to ``fp``,
     a ``.write()``-supporting file-like object.
 
     Supports the same arguments as :func:`json5.dump`
     """
-    fp.write(dumps(obj, **kwargs))
+    fp.write(dumps(obj, ensure_ascii=ensure_ascii, **kwargs))
 
 
-def dumps(obj: Iterable, **kwargs):
+def dumps(obj: Iterable, *, ensure_ascii=True, **kwargs):
     """
     Serialize ``obj`` to a JSONL5-formatted string.
 
     Supports the same arguments as :func:`json5.dumps`
     """
-    return "\n".join(json5.dumps(item, **kwargs) for item in obj)
+    return "\n".join(
+        json5.dumps(item, ensure_ascii=ensure_ascii, **kwargs) for item in obj
+    )
